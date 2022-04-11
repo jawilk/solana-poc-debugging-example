@@ -20,6 +20,8 @@ cargo run --bin helloworld
 ```
 
 ## Creating new debug files  
+Please note: larger projects might not work as of now because unoptimized binaries may exceed the max stack size.
+
 It's necessary to build rust with a slightly different version of llvm to enable useable dwarf info (this will take a while).
 ```
 git clone https://github.com/jawilk/rust.git
@@ -43,7 +45,7 @@ Again in the project root
 cargo +bpf build --target bpfel-unknown-unknown
 ```
 Rename target/bpfel-unknown-unknown/debug/<your-project.so> to something else and copy it to tests/elfs. Adjust the filenames in your poc code.
-Don't forget to remove the symlink afterwards and rename the 'rust_normal' folder to 'rust'.
+Don't forget to remove the symlink afterwards and rename the 'rust_normal' folder to 'rust'.  
 
 ## Changes made to GDB and llvm
 - GDB remote was sending 88 bytes packages for the bpf target registers, i.e. 10 64-bit general purpose regs and 2x 32-bit for sp/pc. This was fine for instruction stepping but not memory access. The patch made them all 64-bit regs
